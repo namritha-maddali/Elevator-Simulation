@@ -105,9 +105,10 @@ void handleInternalRequests(QUEUE_UP *goingUpQueue, QUEUE_DOWN *goingDownQueue, 
         int state = (*floorReached == 0) ? 1 : ((*floorReached == numberOfFloors) ? -1 : 1);    // state of the elevator is 1 by default
 
         if (state == 1) {   // the elevator is moving up
+            printf("\n\nNow going up\n");
             *floorReached = dequeueUp(goingUpQueue);
-            while (goingUpQueue->head != NULL) {
-                printf("How many people are entering on floor %d?\n", *floorReached);
+            while (goingUpQueue->head != NULL && *floorReached!=numberOfFloors) {
+                printf("How many people are entering on floor %d? :: ", *floorReached);
                 scanf("%d", &numberOfPeoplePerFloor);
                 
                 // adding destinations depending on the number of people entering
@@ -121,19 +122,22 @@ void handleInternalRequests(QUEUE_UP *goingUpQueue, QUEUE_DOWN *goingDownQueue, 
 
                 // dequeuing the floor when reached
                 *floorReached = dequeueUp(goingUpQueue);
-                printf("\narrived at %d floor\n", *floorReached);
+                printf("\nArrived at %d floor\n\n", *floorReached);
             }
             // to enable the state change of the elevator when it reaches a floor that isnt the last floor
             if (*floorReached!=numberOfFloors) { 
+                printf("\n\nNow going down\n");
                 enqueueUp(goingUpQueue, numberOfFloors);
+                break;
             }
 
         }
 
         else if (state == -1) {
             // *floorReached = dequeueUp(goingUpQueue);
+            printf("\n\nNow going down\n");
             while (goingDownQueue->head != NULL) {
-                printf("How many people are entering on floor %d?\n", *floorReached);
+                printf("How many people are entering on floor %d? :: ", *floorReached);
                 scanf("%d", &numberOfPeoplePerFloor);
                 
                 // adding destinations depending on the number of people entering
